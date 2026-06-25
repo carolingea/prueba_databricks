@@ -1,0 +1,367 @@
+{
+  "datasets": [
+    {
+      "name": "260cd3d1",
+      "displayName": "Monedas",
+      "queryLines": [
+        "SELECT '$US', 'Dolares' as moneda\r\n",
+        "UNION \r\n",
+        "ALL SELECT '$', 'Pesos' as moneda\r\n"
+      ]
+    },
+    {
+      "name": "fe30df40",
+      "displayName": "Vista_ventas",
+      "queryLines": [
+        "select \r\n",
+        "    p.Name as Product, p.Category, p.Brand, p.Price, p.Currency, p.Stock, p.EAN, p.Color, p.Size, p.Availability, \r\n",
+        "    c.`First Name`, c.`Last Name`, c.Company, c.City, c.Country, c.Email, c.`Phone 1`, c.`Phone 2`,\r\n",
+        "    v.Price as PriceSale, v.Quantity as QuantitySale, v.Total, v.Id\r\n",
+        "FROM ventas v\r\n",
+        "INNER JOIN workspace.default.products p on p.Index = v.productid\r\n",
+        "INNER JOIN workspace.default.customers c on c.Index = v.customerid"
+      ]
+    },
+    {
+      "name": "44ccb890",
+      "displayName": "products",
+      "config": {
+        "version": "1.1",
+        "source": "workspace.default.products",
+        "dimensions": [
+          {
+            "name": "Index",
+            "expr": "source.Index",
+            "displayName": "Index"
+          },
+          {
+            "name": "Name",
+            "expr": "source.Name",
+            "displayName": "Name"
+          },
+          {
+            "name": "Description",
+            "expr": "source.Description",
+            "displayName": "Description"
+          },
+          {
+            "name": "Brand",
+            "expr": "source.Brand",
+            "displayName": "Brand"
+          },
+          {
+            "name": "Category",
+            "expr": "source.Category",
+            "displayName": "Category"
+          },
+          {
+            "name": "Price",
+            "expr": "source.Price",
+            "displayName": "Price"
+          },
+          {
+            "name": "Currency",
+            "expr": "source.Currency",
+            "displayName": "Currency"
+          },
+          {
+            "name": "Stock",
+            "expr": "source.Stock",
+            "displayName": "Stock"
+          },
+          {
+            "name": "EAN",
+            "expr": "source.EAN",
+            "displayName": "EAN"
+          },
+          {
+            "name": "Color",
+            "expr": "source.Color",
+            "displayName": "Color"
+          },
+          {
+            "name": "Size",
+            "expr": "source.Size",
+            "displayName": "Size"
+          },
+          {
+            "name": "Availability",
+            "expr": "source.Availability",
+            "displayName": "Availability"
+          },
+          {
+            "name": "Internal ID",
+            "expr": "source.`Internal ID`",
+            "displayName": "Internal ID"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Representa el número total de filas en el conjunto de datos. Utilice esta medida para contarlas todas.",
+            "displayName": "Recuento"
+          }
+        ]
+      }
+    }
+  ],
+  "pages": [
+    {
+      "name": "6c48a3dc",
+      "displayName": "Ventas",
+      "layout": [
+        {
+          "widget": {
+            "name": "01acdef8",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "fe30df40",
+                  "fields": [
+                    {
+                      "name": "Product",
+                      "expression": "`Product`"
+                    },
+                    {
+                      "name": "sum(QuantitySale)",
+                      "expression": "SUM(`QuantitySale`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Product",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(QuantitySale)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 0,
+            "width": 9,
+            "height": 10
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "2e35eb2f",
+      "displayName": "Productos",
+      "layout": [
+        {
+          "widget": {
+            "name": "8606572c",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "44ccb890",
+                  "fields": [
+                    {
+                      "name": "Color",
+                      "expression": "`Color`"
+                    },
+                    {
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Color",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "count(*)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 7,
+            "height": 9
+          }
+        },
+        {
+          "widget": {
+            "name": "total-productos",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "44ccb890",
+                  "fields": [
+                    {
+                      "name": "countdistinct(Index)",
+                      "expression": "COUNT(DISTINCT `Index`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "showDescription": true,
+                "title": "Total Productos",
+                "description": "Líneas de productos"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "countdistinct(Index)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 2,
+            "height": 2
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
